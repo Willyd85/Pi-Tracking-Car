@@ -9,7 +9,7 @@ async def main():
 
 
     leftMotorTask = asyncio.create_task(
-            left_motor.run())
+            left_motor.run(dir=False))
 
     rightMotorTask = asyncio.create_task(
             right_motor.run())

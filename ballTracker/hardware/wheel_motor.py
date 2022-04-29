@@ -5,8 +5,6 @@ Will + Joe
 import asyncio
 import RPi.GPIO as GPIO
 
-from RpiMotorLib import RpiMotorLib
-
 
 class wheelMotor:
     """
@@ -17,10 +15,24 @@ class wheelMotor:
         self.steppin = _steppin
         self.dirpin = _dirpin
 
-        self.motor = RpiMotorLib.A4988Nema(self.dirpin, self.steppin, (-1, -1, -1), "DRV8825",)
+        GPIO.setmode(GPIO.BCM)
+
+        GPIO.setup(self.steppin, GPIO.OUT)
+        GPIO.setup(self.dirpin, GPIO.OUT)
 
     async def run(self, dir=True, step=2000, delay=0.001):
         """
         Runs the motor async
         """
-        self.motor.motor_go(dir, "Full" , step, delay, False, .05,)
+        i=0
+        
+        while i<step: #TODO: CHANGEME
+            GPIO.output(self.dirpin, dir)
+
+            #TODO: Optimize this
+            GPIO.output(self.steppin, True)
+            await asyncio.sleep(delay)
+            GPIO.output(self.steppin, False)
+            await asyncio.sleep(delay)
+
+            i=i+1
