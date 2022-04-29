@@ -7,20 +7,23 @@ will + joe
 
 import RPi.GPIO as GPIO
 
-# import the library
 from RpiMotorLib import RpiMotorLib
     
-#define GPIO pins
-GPIO_pins = (-1, -1, -1) # Microstep Resolution MS1-MS3 -> GPIO Pin
-direction= 16       # Direction -> GPIO Pin
-step = 12      # Step -> GPIO Pin
 
-# Declare a instance of class pass GPIO pins numbers and the motor type
-mymotortest = RpiMotorLib.A4988Nema(direction, step, GPIO_pins, "DRV8825")
+# All GPIO Pins
+GPIO_pins = (-1, -1, -1)
+l_motor_dir= 16
+l_motor_step = 12
 
+r_motor_dir= 25
+r_motor_step = 24
 
-# call the function, pass the arguments
-mymotortest.motor_go(False, "Full" , 2000, .001, False, .05)
+l_motor = RpiMotorLib.A4988Nema(l_motor_dir, l_motor_step, GPIO_pins, "DRV8825")
+r_motor = RpiMotorLib.A4988Nema(r_motor_dir, r_motor_step, GPIO_pins, "DRV8825")
+
+# Run the motor for a set number of pulses
+l_motor.motor_go(False, "Full" , 2000, .001, False, .05)
+r_motor.motor_go(True, "Full" , 2000, .001, False, .05)
 
 # good practise to cleanup GPIO at some point before exit
 GPIO.cleanup()
